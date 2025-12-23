@@ -179,6 +179,4 @@ Feel free to use, modify, and build upon this project for your own holiday exper
 
 ### 🎄 Merry Christmas & Happy Coding! ✨
 
-```
-
-```
+---
