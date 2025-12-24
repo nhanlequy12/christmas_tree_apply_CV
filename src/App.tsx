@@ -89,6 +89,292 @@ const getTreePosition = () => {
   return [r * Math.cos(theta), y, r * Math.sin(theta)];
 };
 
+// --- COMPONENT: Giao diện lá thư Christmas-est Style ---
+function ChristmasLetterUI({ onClose }: { onClose: () => void }) {
+  return (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+      backgroundColor: 'transparent', // Nền tối xanh rêu đậm
+      zIndex: 100,
+      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      backdropFilter: 'blur(8px)',
+      animation: 'fadeInOverlay 0.5s ease-out'
+    }}>
+      {/* Import Font chữ Giáng sinh từ Google Fonts */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popInCard { 
+          0% { transform: scale(0.5) translateY(50px); opacity: 0; } 
+          100% { transform: scale(1) translateY(0); opacity: 1; } 
+        }
+        @keyframes twinkle {
+          0%, 100% { opacity: 1; } 50% { opacity: 0.5; }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+
+        @keyframes jiggle {
+          0%, 100% { transform: rotate(-8deg); }
+          50% { transform: rotate(8deg); }
+        }
+
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
+          50% { transform: scale(1.1); filter: drop-shadow(0 0 10px gold); }
+        }
+        /* Hiệu ứng tuyết rơi trên giấy */
+        .snow-pattern {
+          background-image: radial-gradient(#d4af37 1px, transparent 1px), radial-gradient(#d4af37 1px, transparent 1px);
+          background-size: 20px 20px;
+          background-position: 0 0, 10px 10px;
+          opacity: 0.1;
+        }
+      `}</style>
+
+      {/* --- CHIẾC THIỆP --- */}
+      <div style={{
+        position: 'relative',
+        width: '90%', maxWidth: '650px',
+        backgroundColor: '#fffaf0', // Màu giấy kem cổ điển
+        backgroundImage: 'linear-gradient(to bottom, #fffaf0, #fff0db)', // Gradient nhẹ
+        padding: '3px', // Tạo viền đôi
+        borderRadius: '15px',
+        boxShadow: '0 0 50px rgba(255, 0, 0, 0.3), 0 20px 40px rgba(0,0,0,0.5)',
+        animation: 'popInCard 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        border: '4px solid #c41e3a' // Viền đỏ ngoài cùng
+      }}>
+
+        {/* Viền trang trí bên trong (Dashed Gold) */}
+        <div style={{
+          border: '2px dashed #b8860b', // Viền nét đứt màu vàng đồng
+          borderRadius: '10px',
+          padding: '40px 30px',
+          position: 'relative',
+          height: '100%',
+          overflow: 'hidden'
+        }}>
+
+          {/* Lớp phủ tuyết lấp lánh (Background Pattern) */}
+          <div className="snow-pattern" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
+
+          {/* Nút đóng (Được thiết kế như con tem sáp) */}
+          <button
+            onClick={onClose}
+            style={{
+              position: 'absolute', top: '15px', right: '15px',
+              width: '40px', height: '40px',
+              background: '#8b0000', // Đỏ sậm
+              color: '#ffd700',
+              border: '2px solid #ffd700',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontFamily: 'serif',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+              zIndex: 10,
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>✕</button>
+
+          {/* --- TRANG TRÍ GÓC (HOLLY BERRIES) --- */}
+          {/* Góc trái trên */}
+          <div style={{ position: 'absolute', top: '-10px', left: '-10px', transform: 'rotate(-45deg)', pointerEvents: 'none' }}>
+            <span style={{ fontSize: '60px', textShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}>🌿</span>
+            <div style={{ position: 'absolute', top: '40px', left: '35px', width: '12px', height: '12px', background: '#d00', borderRadius: '50%', boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.3)' }}></div>
+            <div style={{ position: 'absolute', top: '45px', left: '25px', width: '12px', height: '12px', background: '#d00', borderRadius: '50%', boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.3)' }}></div>
+          </div>
+
+          {/* Góc phải dưới */}
+          <div style={{ position: 'absolute', bottom: '-10px', right: '-10px', transform: 'rotate(135deg)', pointerEvents: 'none' }}>
+            <span style={{ fontSize: '60px', textShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}>🌿</span>
+          </div>
+
+          {/* --- NỘI DUNG LÁ THƯ --- */}
+          <div style={{ position: 'relative', zIndex: 2 }}>
+
+            {/* Tiêu đề */}
+            <h2 style={{
+              fontFamily: "'Great Vibes', cursive", // Font chữ viết tay bay bổng
+              color: '#c41e3a',
+              fontSize: '4em',
+              margin: '0 0 10px 0',
+              textAlign: 'center',
+              textShadow: '2px 2px 0px rgba(255, 215, 0, 0.3)', // Bóng vàng
+              transform: 'rotate(-2deg)' // Nghiêng nhẹ cho nghệ thuật
+            }}>
+              Merry Christmas!
+            </h2>
+
+            <div style={{ width: '60px', height: '2px', background: '#c41e3a', margin: '0 auto 30px auto' }}></div>
+
+            {/* Đoạn 1 */}
+            <p style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '1.3em',
+              lineHeight: '1.6',
+              color: '#1a472a', // Màu xanh rêu đậm dễ đọc
+              textAlign: 'left',
+              fontStyle: 'italic',
+              marginBottom: '20px',
+              fontWeight: 300
+            }}>
+              Gửi người đang ngắm nhìn cây thông này,
+            </p>
+
+            {/* Đoạn 2 */}
+            <p style={{
+              fontFamily: "'Lora', serif", // Font hơi hướng hoạt hình nhẹ nhàng
+              fontSize: '1.2em', // Font này hơi nhỏ nên tăng size
+              lineHeight: '1.5',
+              color: '#2c3e50',
+              textAlign: 'justify',
+              fontWeight: 200
+            }}>
+              Chúc em một mùa Giáng sinh an lành, ấm áp và tràn ngập niềm vui bên những người thân yêu <span style={{ color: '#c41e3a' }}>(Tất nhiên bao gồm cả anh 😤)</span>.
+              Mong rằng mọi điều ước của em sẽ thành hiện thực, mọi khó khăn sẽ được giải quyết, và em sẽ luôn tìm thấy hạnh phúc trong từng khoảnh khắc.
+            </p>
+
+            {/* Đoạn kết */}
+            <p style={{
+              fontFamily: "'Great Vibes', cursive",
+              fontSize: '1.7em',
+              lineHeight: '1.6',
+              color: '#8b0000', // Màu đỏ sậm cho câu chốt
+              textAlign: 'center',
+              marginTop: '25px',
+              borderTop: '1px solid rgba(0,0,0,0.1)',
+              paddingTop: '15px'
+            }}>
+              <span style={{ fontSize: '1.2em', display: 'block', marginTop: '10px', animation: 'pulse 3s infinite' }}>
+                Hãy luôn đón Giáng Sinh cùng nhau nhé bé gà 🐤!
+              </span>
+            </p>
+          </div>
+
+          {/* Footer trang trí */}
+          <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '2em', animation: 'twinkle 2s infinite' }}>
+            🎄 ✨ 🎁
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- COMPONENT: FIX TRIỆT ĐỂ LỖI LỆCH ĐỘ CAO (LIVE CAPTURE) ---
+function FloatingLetter({ onArrival }: { onArrival: () => void }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const progress = useRef(0);
+  const [visible, setVisible] = useState(true);
+
+  // Lưu vị trí thực tế tại thời điểm chuyển giao (0.6)
+  // Để đảm bảo Phase 2 nối tiếp hoàn hảo 100%
+  const transitionPos = useRef(new THREE.Vector3(0, 0, 0));
+
+  // Vector tạm
+  const camDir = useMemo(() => new THREE.Vector3(), []);
+  const targetPos = useMemo(() => new THREE.Vector3(), []);
+
+  useFrame((state, delta) => {
+    if (!visible || !meshRef.current) return;
+
+    const t = progress.current;
+
+    // --- LOGIC TỐC ĐỘ ---
+    let currentSpeed = 0.1;
+    if (t > 0.6) currentSpeed = 0.1;
+    progress.current += delta * currentSpeed;
+
+    // --- KẾT THÚC ---
+    if (t >= 1) {
+      onArrival();
+      setVisible(false);
+      return;
+    }
+
+    let finalX = 0, finalY = 0, finalZ = 0;
+    let scale = 1, rotZ = 0;
+
+    const TOTAL_LOOPS = 5;
+    const RADIUS = 15;
+
+    // === GIAI ĐOẠN 1: XOAY QUANH CÂY (0% -> 60%) ===
+    if (t < 0.6) {
+      const p1 = t / 0.6;
+      const angle = t * Math.PI * 2 * TOTAL_LOOPS;
+
+      finalX = Math.sin(angle) * RADIUS;
+      finalY = 22 * (1 - p1);
+      finalZ = Math.cos(angle) * RADIUS;
+
+      // [QUAN TRỌNG] Cập nhật liên tục vị trí "chốt"
+      // Để khi vừa qua 0.6 là ta có ngay toạ độ này để dùng
+      transitionPos.current.set(finalX, finalY, finalZ);
+
+      rotZ = Math.sin(t * 15) * 0.3;
+    }
+
+    // === GIAI ĐOẠN 2: BAY TỚI CAMERA (60% -> 100%) ===
+    else {
+      const p2 = (t - 0.6) / 0.4;
+      const easeP2 = 1 - Math.pow(1 - p2, 3); // Ease Out
+
+      // Xác định Đích đến
+      state.camera.getWorldDirection(camDir);
+      targetPos.copy(state.camera.position).add(camDir.multiplyScalar(6));
+
+      // [FIX 1] Lerp từ transitionPos (Vị trí thực cuối cùng của Phase 1)
+      // Thay vì tính toán lại, ta lấy luôn điểm mà lá thư đang đứng -> Không bao giờ lệch
+      const currentPos = transitionPos.current.clone().lerp(targetPos, easeP2);
+
+      // [FIX 2] Sửa lỗi Drift Y
+      // Dùng Sin thay vì Cos. Vì Sin(0)=0 nên bắt đầu Phase 2 sẽ không bị cộng độ lệch
+      const swayAmp = 2 * (1 - easeP2);
+      const driftX = Math.sin(p2 * 10) * swayAmp;
+      const driftY = Math.sin(p2 * 8) * swayAmp * 0.5; // Đã đổi Cos -> Sin
+
+      finalX = currentPos.x + driftX;
+      finalY = currentPos.y + driftY;
+      finalZ = currentPos.z;
+
+      rotZ = driftX * 0.1;
+      scale = 1 + (Math.pow(p2, 3) * 0.5);
+    }
+
+    // Gán vị trí
+    meshRef.current.position.set(finalX, finalY, finalZ);
+    meshRef.current.lookAt(state.camera.position);
+    meshRef.current.rotation.z = THREE.MathUtils.lerp(meshRef.current.rotation.z, rotZ, 0.1);
+    meshRef.current.scale.set(scale, scale, scale);
+  });
+
+  if (!visible) return null;
+
+  return (
+    <mesh ref={meshRef}>
+      <boxGeometry args={[2, 1.2, 0.1]} />
+      <meshStandardMaterial color="#c41e3a" emissive="#7a1324" roughness={0.4} />
+
+      <mesh position={[0, 0, 0.06]} scale={[0.9, 0.9, 1]}>
+        <planeGeometry args={[2, 1.2]} />
+        <meshBasicMaterial color="#fffaf0" />
+        <mesh position={[0, 0, 0.01]}>
+          <circleGeometry args={[0.2, 32]} />
+          <meshBasicMaterial color="#FFD700" />
+        </mesh>
+        <mesh position={[0, -0.2, 0.01]} scale={[0.8, 0.1, 1]}>
+          <planeGeometry args={[1, 1]} />
+          <meshBasicMaterial color="#000" opacity={0.1} transparent />
+        </mesh>
+      </mesh>
+    </mesh>
+  );
+}
+
 // --- Component: Foliage ---
 const Foliage = ({ state }: { state: 'CHAOS' | 'FORMED' | 'CAROUSEL' }) => {
   const materialRef = useRef<any>(null);
@@ -670,6 +956,14 @@ export default function GrandTreeApp() {
   const [aiStatus, setAiStatus] = useState("INITIALIZING...");
   const [debugMode, setDebugMode] = useState(false);
 
+  // --- new state for letter ---
+  // Handle floating letter 3D
+  const [showFlyingLetter, setShowFlyingLetter] = useState(false);
+  // Handle final letter UI
+  const [showFinalLetterUI, setShowFinalLetterUI] = useState(false);
+  // Handle gesture disabling (for letter reading)
+  const [gesturesDisabled, setGesturesDisabled] = useState(false);
+
   const [isPhotoSpinning, setIsPhotoSpinning] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -689,6 +983,7 @@ export default function GrandTreeApp() {
   }, []);
 
   const handleGesture = (gestureName: string) => {
+    if (gesturesDisabled) return;
     if (gestureName === 'Open_Palm') {
       setSceneState('CHAOS');
       setIsPhotoSpinning(false);
@@ -701,6 +996,12 @@ export default function GrandTreeApp() {
     } else if (gestureName === 'Victory') {
       setSceneState('CAROUSEL');
       setIsPhotoSpinning(true);
+    } else if (gestureName === 'ILoveYou') {
+      setSceneState('FORMED');
+      setIsPhotoSpinning(false);
+      setGesturesDisabled(true);
+      setShowFlyingLetter(true);
+      setAiStatus("❤️ SENDING LOVE... ❤️");
     } else if (gestureName === 'Thumb_Up') {
       if (audioRef.current && audioRef.current.paused) {
         audioRef.current.play().catch(e => console.error("Chưa thể phát nhạc (cần tương tác user):", e));
@@ -714,8 +1015,16 @@ export default function GrandTreeApp() {
     }
   };
 
+  const handleCloseLetter = () => {
+    setShowFinalLetterUI(false); // Turn off final letter UI
+    setShowFlyingLetter(false); // Turn off 3D letter 
+    setGesturesDisabled(false); // Unlock hand detections
+    setAiStatus("Gestures Enabled");
+  };
+
   return (
     <div style={{ width: '100vw', height: '100vh', backgroundColor: '#000', position: 'relative', overflow: 'hidden' }}>
+      {showFinalLetterUI && <ChristmasLetterUI onClose={handleCloseLetter} />}
       <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
         <Canvas dpr={[1, 2]} gl={{ toneMapping: THREE.ReinhardToneMapping }} shadows>
           <Experience
@@ -723,16 +1032,21 @@ export default function GrandTreeApp() {
             rotationSpeed={rotationSpeed}
             isPhotoSpinning={isPhotoSpinning}
           />
+
+          {showFlyingLetter && (
+            <FloatingLetter onArrival={() => setShowFinalLetterUI(true)} />
+          )}
         </Canvas>
       </div>
       <GestureController
         onGesture={(g: string) => handleGesture(g)}
         onMove={setRotationSpeed}
-        onStatus={setAiStatus}
-        debugMode={debugMode}
+        // If gestures are disabled, provide a no-op function
+        onStatus={gesturesDisabled ? () => { } : setAiStatus}
+        debugMode={!debugMode}
       />
 
-      {/* UI - Buttons */}
+      {/* UI - Buttons
       <div style={{ position: 'absolute', bottom: '30px', right: '40px', zIndex: 10, display: 'flex', gap: '10px' }}>
         <button onClick={() => setDebugMode(!debugMode)} style={{ padding: '12px 15px', backgroundColor: debugMode ? '#FFD700' : 'rgba(0,0,0,0.5)', border: '1px solid #FFD700', color: debugMode ? '#000' : '#FFD700', fontFamily: 'sans-serif', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
           {debugMode ? 'HIDE DEBUG' : '🛠 DEBUG'}
@@ -740,12 +1054,16 @@ export default function GrandTreeApp() {
         <button onClick={() => setSceneState(s => s === 'CHAOS' ? 'FORMED' : 'CHAOS')} style={{ padding: '12px 30px', backgroundColor: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255, 215, 0, 0.5)', color: '#FFD700', fontFamily: 'serif', fontSize: '14px', fontWeight: 'bold', letterSpacing: '3px', textTransform: 'uppercase', cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
           {sceneState === 'CHAOS' ? 'Assemble Tree' : 'Disperse'}
         </button>
-      </div>
+      </div> */}
 
-      {/* UI - AI Status */}
+      {/* UI - AI Status
       <div style={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)', color: aiStatus.includes('ERROR') ? '#FF0000' : 'rgba(255, 215, 0, 0.4)', fontSize: '10px', letterSpacing: '2px', zIndex: 10, background: 'rgba(0,0,0,0.5)', padding: '4px 8px', borderRadius: '4px' }}>
         {aiStatus}
-      </div>
+      </div> */}
+
+      {/* <div style={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)', color: aiStatus.includes('ERROR') ? '#FF0000' : (gesturesDisabled ? '#FF69B4' : 'rgba(255, 215, 0, 0.4)'), fontSize: '10px', letterSpacing: '2px', zIndex: 10, background: 'rgba(0,0,0,0.5)', padding: '4px 8px', borderRadius: '4px' }}>
+        {gesturesDisabled ? "⚠️ GESTURES DISABLED (Reading Letter)" : aiStatus}
+      </div> */}
     </div>
   );
 }
