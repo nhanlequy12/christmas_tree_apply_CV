@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, extend, useThree } from '@react-three/fiber';
 import type { GroupProps } from "@react-three/fiber";
+import musicFile from './assets/laviz.mp3';
 import {
   OrbitControls,
   Environment,
@@ -617,10 +618,10 @@ const GestureController = ({ onGesture, onMove, onStatus, debugMode }: any) => {
               const name = results.gestures[0][0].categoryName;
               const score = results.gestures[0][0].score;
 
-              if (score > 0.4) {
+              if (score > 0.5) {
                 if (latestOnStatus.current) latestOnStatus.current(`DETECTED: ${name} (${(score * 100).toFixed(0)}%)`);
 
-                if (["Open_Palm", "Closed_Fist", "Pointing_Up", "Victory", "ILoveYou"].includes(name)) {
+                if (["Open_Palm", "Closed_Fist", "Pointing_Up", "Victory", "ILoveYou", "Thumb_Up", "Thumb_Down"].includes(name)) {
                   if (latestOnGesture.current) latestOnGesture.current(name);
                 }
               }
@@ -670,6 +671,22 @@ export default function GrandTreeApp() {
   const [debugMode, setDebugMode] = useState(false);
 
   const [isPhotoSpinning, setIsPhotoSpinning] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio(musicFile);
+
+    audio.loop = true;
+    audio.volume = 0.5;
+    audioRef.current = audio;
+
+    console.log("Music loaded from:", musicFile);
+
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, []);
 
   const handleGesture = (gestureName: string) => {
     if (gestureName === 'Open_Palm') {
@@ -684,6 +701,16 @@ export default function GrandTreeApp() {
     } else if (gestureName === 'Victory') {
       setSceneState('CAROUSEL');
       setIsPhotoSpinning(true);
+    } else if (gestureName === 'Thumb_Up') {
+      if (audioRef.current && audioRef.current.paused) {
+        audioRef.current.play().catch(e => console.error("Chưa thể phát nhạc (cần tương tác user):", e));
+        setAiStatus("MUSIC: ON ♫");
+      }
+    } else if (gestureName === 'Thumb_Down') {
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setAiStatus("MUSIC: OFF 🔇");
+      }
     }
   };
 
@@ -704,22 +731,6 @@ export default function GrandTreeApp() {
         onStatus={setAiStatus}
         debugMode={debugMode}
       />
-
-      {/* UI - Stats */}
-      <div style={{ position: 'absolute', bottom: '30px', left: '40px', color: '#888', zIndex: 10, fontFamily: 'sans-serif', userSelect: 'none' }}>
-        <div style={{ marginBottom: '15px' }}>
-          <p style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '4px' }}>Memories</p>
-          <p style={{ fontSize: '24px', color: '#FFD700', fontWeight: 'bold', margin: 0 }}>
-            {CONFIG.counts.ornaments.toLocaleString()} <span style={{ fontSize: '10px', color: '#555', fontWeight: 'normal' }}>POLAROIDS</span>
-          </p>
-        </div>
-        <div>
-          <p style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '4px' }}>Foliage</p>
-          <p style={{ fontSize: '24px', color: '#004225', fontWeight: 'bold', margin: 0 }}>
-            {(CONFIG.counts.foliage / 1000).toFixed(0)}K <span style={{ fontSize: '10px', color: '#555', fontWeight: 'normal' }}>EMERALD NEEDLES</span>
-          </p>
-        </div>
-      </div>
 
       {/* UI - Buttons */}
       <div style={{ position: 'absolute', bottom: '30px', right: '40px', zIndex: 10, display: 'flex', gap: '10px' }}>
